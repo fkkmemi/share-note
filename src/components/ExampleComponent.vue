@@ -6,7 +6,8 @@
         {{ todo.id }} - {{ todo.content }}
       </li>
     </ul>
-    <p>Count: {{ todoCount }} / {{ meta.totalCount }}</p>
+    <p>Count????: {{ todoCount }} / {{ meta.totalCount }}</p>
+    <q-chip>jijiji</q-chip>
     <p>Active: {{ active ? 'yes' : 'no' }}</p>
     <p>Clicks on todos: {{ clickCount }}</p>
   </div>
@@ -19,23 +20,23 @@ import {
   computed,
   ref,
   toRef,
-  Ref,
-} from 'vue';
-import { Todo, Meta } from './models';
+  Ref
+} from 'vue'
+import { Todo, Meta } from './models'
 
-function useClickCount() {
-  const clickCount = ref(0);
-  function increment() {
+function useClickCount () {
+  const clickCount = ref(0)
+  function increment () {
     clickCount.value += 1
-    return clickCount.value;
+    return clickCount.value
   }
 
-  return { clickCount, increment };
+  return { clickCount, increment }
 }
 
-function useDisplayTodo(todos: Ref<Todo[]>) {
-  const todoCount = computed(() => todos.value.length);
-  return { todoCount };
+function useDisplayTodo (todos: Ref<Todo[]>) {
+  const todoCount = computed(() => todos.value.length)
+  return { todoCount }
 }
 
 export default defineComponent({
@@ -57,8 +58,8 @@ export default defineComponent({
       type: Boolean
     }
   },
-  setup(props) {
-    return { ...useClickCount(), ...useDisplayTodo(toRef(props, 'todos')) };
-  },
-});
+  setup (props) {
+    return { ...useClickCount(), ...useDisplayTodo(toRef(props, 'todos')) }
+  }
+})
 </script>
