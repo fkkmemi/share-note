@@ -9,25 +9,21 @@ yarn
 npm install
 ```
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
-```bash
-quasar dev
+## firebaseConfig
+
+firebase console 설정에서 복사해서 파일을 만듬
+
+**firebaseConfig.js**
+```js
+export default {
+  apiKey: 'aaa',
+  authDomain: 'aaa.firebaseapp.com',
+  databaseURL: 'https://aaa.firebaseio.com',
+  projectId: 'aaa',
+  storageBucket: 'aaa.appspot.com',
+  messagingSenderId: 'aaa',
+  appId: '1:aaa:web:f7ac4cb6798c6c338c576c'
+}
 ```
 
 
-### Lint the files
-```bash
-yarn lint
-# or
-npm run lint
-```
-
-
-
-### Build the app for production
-```bash
-quasar build
-```
-
-### Customize the configuration
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js).

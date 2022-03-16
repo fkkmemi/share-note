@@ -3,10 +3,10 @@ import { ref, computed, watch, onMounted } from 'vue'
 import MyCompoVue from './MyCompo.vue'
 const test = 'abcdeee'
 const t = ref<boolean>(false)
-const toggle = () => {
-  t.value = !t.value
-  console.log('t', t)
-}
+// const toggle = () => {
+//   t.value = !t.value
+//   console.log('t', t)
+// }
 
 const a = ref(3), b = ref(4)
 const sum = computed(() => a.value + b.value)
