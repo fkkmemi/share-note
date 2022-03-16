@@ -26,4 +26,13 @@ export default {
 }
 ```
 
+**.firebaserc**
+```js
+{
+  "projects": {
+    "default": "project-id"
+  }
+}
+```
+
 
