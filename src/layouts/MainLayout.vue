@@ -1,29 +1,17 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { auth } from 'src/boot/firebase'
-import {
-  GoogleAuthProvider, signInWithPopup, signOut,
-  onAuthStateChanged
-} from 'firebase/auth'
+import { useAuth, firebaseUser, loading } from 'src/composables/useAuth'
+import SignIn from 'src/components/SignIn.vue'
+import SignInBtn from 'src/components/SignInBtn.vue'
 const drawer = ref(false)
-const provider = new GoogleAuthProvider()
-const logIn = () => {
-  signInWithPopup(auth, provider)
-}
+const { logIn, logOut } = useAuth()
 
-const logOut = () => {
-  signOut(auth)
-}
-
-onAuthStateChanged(auth, (user) => {
-  console.log('log')
-  console.log(user)
-})
+const env = process.env.NODE_ENV
 </script>
 
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header elevated v-if="firebaseUser && !loading">
       <q-toolbar>
         <q-btn
           flat
@@ -35,11 +23,10 @@ onAuthStateChanged(auth, (user) => {
         />
 
         <q-toolbar-title>
-          Quasar App
+          Quasar App {{ env }}
         </q-toolbar-title>
 
-        <q-btn icon="mdi-login" round flat @click="logIn" />
-        <q-btn icon="mdi-logout" round flat @click="logOut" />
+        <SignInBtn />
       </q-toolbar>
     </q-header>
 
@@ -58,7 +45,11 @@ onAuthStateChanged(auth, (user) => {
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <q-page v-if="loading" class="row justify-center items-center">
+        <q-circular-progress indeterminate />
+      </q-page>
+      <SignIn v-else-if="!firebaseUser" />
+      <router-view v-else />
     </q-page-container>
   </q-layout>
 </template>
