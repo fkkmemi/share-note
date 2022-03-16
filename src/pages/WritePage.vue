@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import NoteList from 'src/components/NoteList.vue'
+import NoteWrite from 'src/components/NoteWrite.vue'
 
 </script>
-
 <template>
   <q-page padding>
-    <NoteList />
+    <NoteWrite />
   </q-page>
 </template>
