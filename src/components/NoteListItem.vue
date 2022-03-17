@@ -9,10 +9,12 @@ const item = computed(() => props.doc.data())
 <template>
   <q-item :to="`/note/${doc.id}`">
     <q-item-section>
-      <q-item-label>{{ item.title }}</q-item-label>
-      <q-item-label>{{ item.content }}</q-item-label>
-      <q-item-label>{{ item.createdAt.toDate().toLocaleString() }}</q-item-label>
-      <q-item-label>{{ item.uid }}</q-item-label>
+      <q-item-label>
+        <q-badge>{{item.category}}</q-badge>
+        {{ item.title }}</q-item-label>
+      <!-- <q-item-label>{{ item.content }}</q-item-label> -->
+      <q-item-label caption>{{ item.createdAt.toDate().toLocaleString() }}</q-item-label>
+      <!-- <q-item-label>{{ item.uid }}</q-item-label> -->
 
     </q-item-section>
   </q-item>

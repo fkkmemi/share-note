@@ -3,6 +3,8 @@ import { defineProps, onMounted, ref, computed } from 'vue'
 import { useFirestore } from 'src/composables/useFirestore'
 import { DocumentSnapshot, DocumentData } from 'firebase/firestore'
 import { useRouter } from 'vue-router'
+import { categories } from 'src/composables/useDatabase'
+const { createNote } = useFirestore()
 const { readNote, updateNote } = useFirestore()
 const router = useRouter()
 const props = defineProps<{ id: string }>()
@@ -11,10 +13,12 @@ const loading = ref(true)
 
 const title = ref('')
 const content = ref('')
+const category = ref('')
 const getNote = async () => {
   doc.value = await readNote(props.id)
   title.value = item.value.title
   content.value = item.value.content
+  category.value = item.value.category
   loading.value = false
 }
 const item = computed(() => {
@@ -33,12 +37,13 @@ const item = computed(() => {
     title: data.title,
     content: data.content,
     createdAt: data.createdAt.toDate(),
-    uid: data.uid
+    uid: data.uid,
+    category: data.category
   }
 })
 
 const update = async () => {
-  await updateNote(props.id, title.value, content.value)
+  await updateNote(props.id, title.value, content.value, category.value)
   router.push('/note/' + props.id)
 }
 
@@ -53,6 +58,7 @@ onMounted(() => {
       <q-card-section class="q-gutter-sm">
         <q-input v-model="title"
         outlined label="title" />
+        <q-select v-model="category" :options="categories" outlined label="categories" />
         <q-input v-model="content" outlined label="content" type="textarea" />
       </q-card-section>
       <q-card-actions>

@@ -29,7 +29,8 @@ const item = computed(() => {
     content: data.content,
     createdAt: data.createdAt.toDate(),
     updatedAt: data.updatedAt.toDate(),
-    uid: data.uid
+    uid: data.uid,
+    category: data.category
   }
 })
 
@@ -47,6 +48,7 @@ onMounted(() => {
   <div v-if="!loading">
     <q-card>
       <q-card-section class="text-h5">
+        <q-badge>{{item.category}}</q-badge>
         {{item.title}}
       </q-card-section>
       <q-card-section style="white-space:pre">
