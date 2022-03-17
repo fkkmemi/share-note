@@ -47,6 +47,9 @@ const update = async () => {
   router.push('/note/' + props.id)
 }
 
+const existsRule = (val: string) => (val && val.length > 0) || 'Please type something'
+const sizeRule = (val: string) => (val.length > 0 && val.length < 10000) || 'Please type something'
+
 onMounted(() => {
   getNote()
 })
@@ -57,9 +60,9 @@ onMounted(() => {
 
       <q-card-section class="q-gutter-sm">
         <q-input v-model="title"
-        outlined label="title" />
-        <q-select v-model="category" :options="categories" outlined label="categories" />
-        <q-input v-model="content" outlined label="content" type="textarea" />
+        outlined label="title" :rules="[existsRule]" />
+        <q-select v-model="category" :options="categories" outlined label="categories" :rules="[existsRule]" />
+        <q-input v-model="content" outlined label="content" type="textarea" :rules="[existsRule, sizeRule]" />
       </q-card-section>
       <q-card-actions>
         <q-space />
