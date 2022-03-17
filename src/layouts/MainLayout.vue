@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useAuth, firebaseUser, loading } from 'src/composables/useAuth'
+import { firebaseUser, loading } from 'src/composables/useAuth'
 import SignIn from 'src/components/SignIn.vue'
 import SignInBtn from 'src/components/SignInBtn.vue'
 const drawer = ref(false)
-const { logIn, logOut } = useAuth()
+
+const menus = [
+  { to: '/', name: 'Notes', icon: 'mdi-note' },
+  { to: '/setting', name: 'Settings', icon: 'mdi-cog' },
+  { to: '/about', name: 'About', icon: 'mdi-information' }
+]
 
 const env = process.env.NODE_ENV
 </script>
@@ -41,6 +46,14 @@ const env = process.env.NODE_ENV
         >
           Essential Links
         </q-item-label>
+        <q-item v-for="item in menus" :key="item.to" :to="item.to">
+          <q-item-section avatar>
+            <q-icon :name="item.icon"></q-icon>
+          </q-item-section>
+          <q-item-section>
+            {{item.name}}
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
