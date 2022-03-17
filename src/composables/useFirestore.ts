@@ -3,7 +3,7 @@ import { collection, addDoc, doc, getDocs, getDoc, updateDoc, deleteDoc } from '
 import { firebaseUser } from './useAuth'
 
 export const useFirestore = () => {
-  const createNote = (title: string, content: string, category: string) => {
+  const createNote = (title: string, content: string, category: string, imageURL?: string) => {
     if (!firebaseUser.value) throw Error('user not signed')
     const noteCollection = collection(db, 'notes')
 
@@ -13,7 +13,8 @@ export const useFirestore = () => {
       category,
       createdAt: new Date(),
       updatedAt: new Date(),
-      uid: firebaseUser.value.uid
+      uid: firebaseUser.value.uid,
+      imageURL
     }
     return addDoc(noteCollection, note)
   }
@@ -28,13 +29,14 @@ export const useFirestore = () => {
     return getDoc(noteRef)
   }
 
-  const updateNote = (id: string, title: string, content: string, category: string) => {
+  const updateNote = (id: string, title: string, content: string, category: string, imageURL: string) => {
     const noteRef = doc(db, 'notes', id)
     const note = {
       title,
       content,
       category,
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      imageURL
     }
     return updateDoc(noteRef, note)
   }

@@ -30,7 +30,8 @@ const item = computed(() => {
     createdAt: data.createdAt.toDate(),
     updatedAt: data.updatedAt.toDate(),
     uid: data.uid,
-    category: data.category
+    category: data.category,
+    imageURL: data.imageURL
   }
 })
 
@@ -54,10 +55,14 @@ onMounted(() => {
       <q-card-section style="white-space:pre">
         {{item.content}}
       </q-card-section>
+      <q-card-section v-if="item.imageURL">
+        <q-img :src="item.imageURL" />
+      </q-card-section>
       <q-card-section>
         작성일: {{item.createdAt}}<br>
         수정일: {{item.updatedAt}}
       </q-card-section>
+
       <q-card-actions>
         <q-space />
         <q-btn to="/" label="목록" icon="mdi-arrow-left" />
