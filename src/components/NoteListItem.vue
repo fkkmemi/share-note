@@ -15,7 +15,7 @@ const item = computed(() => props.doc.data())
       <!-- <q-item-label>{{ item.content }}</q-item-label> -->
       <q-item-label caption>{{ item.createdAt.toDate().toLocaleString() }}</q-item-label>
       <!-- <q-item-label>{{ item.uid }}</q-item-label> -->
-
+      <div style="height: 200px">dummy</div>
     </q-item-section>
   </q-item>
 </template>

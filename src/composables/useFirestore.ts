@@ -1,7 +1,8 @@
 import { db } from 'boot/firebase'
 import {
   collection, addDoc, doc, getDocs, getDoc, updateDoc, deleteDoc,
-  query, limit, orderBy, QueryDocumentSnapshot, DocumentData, QueryConstraint, startAfter
+  query, limit, orderBy, QueryDocumentSnapshot, DocumentData, QueryConstraint, startAfter,
+  where
 } from 'firebase/firestore'
 import { firebaseUser } from './useAuth'
 
@@ -22,10 +23,11 @@ export const useFirestore = () => {
     return addDoc(noteCollection, note)
   }
 
-  const readNotes = (lastSnapshot: QueryDocumentSnapshot<DocumentData> | null) => {
+  const readNotes = (lastSnapshot: QueryDocumentSnapshot<DocumentData> | null, category: string) => {
     const noteCollection = collection(db, 'notes')
     const params: QueryConstraint[] = []
     params.push(orderBy('createdAt', 'desc'))
+    if (category) params.push(where('category', '==', category))
     if (lastSnapshot) params.push(startAfter(lastSnapshot))
     params.push(limit(2))
 
