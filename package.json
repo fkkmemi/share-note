@@ -10,7 +10,12 @@
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
     "build": "quasar build",
-    "emul": "firebase emulators:start"
+    "emul": "firebase emulators:start",
+    "predeploy": "quasar build",
+    "predeploy:hs": "quasar build",
+    "deploy": "firebase deploy",
+    "deploy:fs": "firebase deploy --only firestore",
+    "deploy:hs": "firebase deploy --only hosting"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",

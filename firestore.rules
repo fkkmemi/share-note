@@ -1,8 +1,17 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isSigned () {
+      return request.auth != null
+    }
+    function isOwnResource () {
+      return request.auth.uid == resource.data.uid
+    }
     match /notes/{id} {
-      allow read, write: if request.auth != null;
+      allow read: if isSigned()
+      allow create: if isSigned()
+      allow update: if isOwnResource()
+      allow delete: if isOwnResource()
     }
   }
 }

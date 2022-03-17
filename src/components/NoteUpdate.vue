@@ -3,13 +3,18 @@ import { defineProps, onMounted, ref, computed } from 'vue'
 import { useFirestore } from 'src/composables/useFirestore'
 import { DocumentSnapshot, DocumentData } from 'firebase/firestore'
 import { useRouter } from 'vue-router'
+const { readNote, updateNote } = useFirestore()
 const router = useRouter()
-const { readNote, deleteNote } = useFirestore()
 const props = defineProps<{ id: string }>()
 const doc = ref<DocumentSnapshot<DocumentData> | null>(null)
 const loading = ref(true)
+
+const title = ref('')
+const content = ref('')
 const getNote = async () => {
   doc.value = await readNote(props.id)
+  title.value = item.value.title
+  content.value = item.value.content
   loading.value = false
 }
 const item = computed(() => {
@@ -28,15 +33,13 @@ const item = computed(() => {
     title: data.title,
     content: data.content,
     createdAt: data.createdAt.toDate(),
-    updatedAt: data.updatedAt.toDate(),
     uid: data.uid
   }
 })
 
-const remove = async () => {
-  if (!confirm('정말 삭제하실래요?')) return
-  await deleteNote(props.id)
-  router.push('/')
+const update = async () => {
+  await updateNote(props.id, title.value, content.value)
+  router.push('/note/' + props.id)
 }
 
 onMounted(() => {
@@ -46,21 +49,16 @@ onMounted(() => {
 <template>
   <div v-if="!loading">
     <q-card>
-      <q-card-section class="text-h5">
-        {{item.title}}
-      </q-card-section>
-      <q-card-section style="white-space:pre">
-        {{item.content}}
-      </q-card-section>
-      <q-card-section>
-        작성일: {{item.createdAt}}<br>
-        수정일: {{item.updatedAt}}
+
+      <q-card-section class="q-gutter-sm">
+        <q-input v-model="title"
+        outlined label="title" />
+        <q-input v-model="content" outlined label="content" type="textarea" />
       </q-card-section>
       <q-card-actions>
         <q-space />
         <q-btn to="/" label="목록" icon="mdi-arrow-left" />
-        <q-btn :to="`/note/${id}/update`" label="수정" icon="mdi-pencil" color="warning" />
-        <q-btn @click="remove" label="삭제" icon="mdi-delete" color="negative" />
+        <q-btn label="저장" icon="mdi-content-save" @click="update" />
       </q-card-actions>
     </q-card>
   </div>
