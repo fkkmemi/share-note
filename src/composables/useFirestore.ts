@@ -1,5 +1,5 @@
 import { db } from 'boot/firebase'
-import { collection, addDoc } from 'firebase/firestore'
+import { collection, addDoc, doc, getDocs, getDoc } from 'firebase/firestore'
 import { firebaseUser } from './useAuth'
 
 export const useFirestore = () => {
@@ -13,8 +13,19 @@ export const useFirestore = () => {
     return addDoc(noteCollection, note)
   }
 
-  return {
-    createNote
+  const readNotes = () => {
+    const noteCollection = collection(db, 'notes')
+    return getDocs(noteCollection)
+  }
 
+  const readNote = (id: string) => {
+    const noteRef = doc(db, 'notes', id)
+    return getDoc(noteRef)
+  }
+
+  return {
+    createNote,
+    readNotes,
+    readNote
   }
 }
