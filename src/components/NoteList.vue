@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useFirestore } from 'src/composables/useFirestore'
 import { QueryDocumentSnapshot, DocumentData } from 'firebase/firestore'
 import NoteListItem from 'src/components/NoteListItem.vue'
@@ -10,11 +10,14 @@ const noteSnapshots = ref<QueryDocumentSnapshot<DocumentData>[]>([])
 const lastSnapshot = ref<QueryDocumentSnapshot<DocumentData> | null>(null)
 const loading = ref(false)
 const category = ref('')
+const sortDesc = ref(true)
+
+const sortStr = computed(() => sortDesc.value ? 'desc' : 'asc')
 const getNotes = async () => {
   if (loading.value) return
   try {
     loading.value = true
-    const sn = await readNotes(lastSnapshot.value, category.value)
+    const sn = await readNotes(lastSnapshot.value, category.value, sortStr.value)
     if (sn.empty) return
     noteSnapshots.value.push(...sn.docs)
     lastSnapshot.value = sn.docs.pop() as QueryDocumentSnapshot<DocumentData>
@@ -25,6 +28,12 @@ const getNotes = async () => {
   }
 }
 const changeCategory = () => {
+  noteSnapshots.value = []
+  lastSnapshot.value = null
+  getNotes()
+}
+
+const changeSort = () => {
   noteSnapshots.value = []
   lastSnapshot.value = null
   getNotes()
@@ -50,6 +59,7 @@ onUnmounted(() => {
       <q-space/>
       <q-select dense
       v-model="category" :options="categories" filled label="category" @update:model-value="changeCategory" />
+      <q-toggle v-model="sortDesc" :label="sortDesc ? '내림차' : '오름차'" @update:model-value="changeSort" />
     </q-toolbar>
     <q-list>
       <NoteListItem v-for="doc in noteSnapshots" :key="doc.id" :doc="doc" />
