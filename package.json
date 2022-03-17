@@ -15,6 +15,7 @@
     "predeploy:hs": "quasar build",
     "deploy": "firebase deploy",
     "deploy:fs": "firebase deploy --only firestore",
+    "deploy:st": "firebase deploy --only storage",
     "deploy:hs": "firebase deploy --only hosting"
   },
   "dependencies": {

@@ -37,3 +37,4 @@ firebaseConfig.js
 .firebaserc
 firebase-data
 *-debug.log
+.firebase
