@@ -6,9 +6,12 @@ import NoteListItem from 'src/components/NoteListItem.vue'
 
 const { readNotes } = useFirestore()
 const noteSnapshots = ref<QueryDocumentSnapshot<DocumentData>[]>([])
+const lastSnapshot = ref<QueryDocumentSnapshot<DocumentData> | null>(null)
 const getNotes = async () => {
-  const sn = await readNotes()
-  noteSnapshots.value = sn.docs
+  const sn = await readNotes(lastSnapshot.value)
+  if (sn.empty) return
+  noteSnapshots.value.push(...sn.docs)
+  lastSnapshot.value = sn.docs.pop() as QueryDocumentSnapshot<DocumentData>
 }
 
 onMounted(() => {
@@ -25,6 +28,9 @@ onUnmounted(() => {
     <q-list>
       <NoteListItem v-for="doc in noteSnapshots" :key="doc.id" :doc="doc" />
     </q-list>
+    <q-card-actions>
+      <q-btn @click="getNotes" label="더보기" />
+    </q-card-actions>
 
   </q-card>
 

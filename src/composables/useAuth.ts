@@ -10,7 +10,6 @@ export const firebaseUser = ref<User | null>(null)
 export const loading = ref(true)
 
 onAuthStateChanged(auth, (user) => {
-  console.log('user', user)
   firebaseUser.value = user
   loading.value = false
 })
